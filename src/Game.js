@@ -73,24 +73,23 @@ function drawGameEnd() {
   }
 }
 
-// Function to restart the game
+// функция рестарта
 function restartGame() {
-  // Clear the canvas
+  // очистка канваса
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   
-  // Reinitialize the TileMap
+  // перезапуск карты
   tileMap = new TileMap(tileSize);
   
-  // Reinitialize Pacman and Enemies
+  // перезапуск пакмана и призраков
   pacman = tileMap.getPacman(velocity);
   enemies = tileMap.getEnemies(velocity);
   
-  // Reset game state variables
   gameOver = false;
   gameWin = false;
 }
 
-// Event listener for the R key to restart the game
+// нажатие кнопки R или К = рестарт
 window.addEventListener('keydown', (event) => {
   if (event.key === 'r' || event.key === 'R' || event.key === 'к' || event.key === 'К') {
     restartGame();
