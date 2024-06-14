@@ -5,9 +5,10 @@ const tileSize = 32;
 const velocity = 2;
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
-const tileMap = new TileMap(tileSize);
-const pacman = tileMap.getPacman(velocity);
-const enemies = tileMap.getEnemies(velocity);
+let tileMap = new TileMap(tileSize);
+
+let pacman = tileMap.getPacman(velocity);
+let enemies = tileMap.getEnemies(velocity);
 
 let gameOver = false;
 let gameWin = false;
@@ -16,7 +17,6 @@ const gameOverSound = new Audio("sounds/gameOver.wav");
 const gameWinSound = new Audio("sounds/gameWin.wav");
 
 function gameLoop() {
-  // console.log("game loop");
   tileMap.draw(ctx);
   drawGameEnd();
   pacman.draw(ctx, pause(), enemies);
@@ -48,9 +48,11 @@ function isGameOver() {
     (enemy) => !pacman.powerDotActive && enemy.collideWith(pacman)
   );
 }
+
 function pause() {
   return !pacman.madeFirstMove || gameOver || gameWin;
 }
+
 function drawGameEnd() {
   if (gameOver || gameWin) {
     let text = "You Win!";
@@ -70,5 +72,30 @@ function drawGameEnd() {
     ctx.fillText(text, 10, canvas.height / 2);
   }
 }
+
+// Function to restart the game
+function restartGame() {
+  // Clear the canvas
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  
+  // Reinitialize the TileMap
+  tileMap = new TileMap(tileSize);
+  
+  // Reinitialize Pacman and Enemies
+  pacman = tileMap.getPacman(velocity);
+  enemies = tileMap.getEnemies(velocity);
+  
+  // Reset game state variables
+  gameOver = false;
+  gameWin = false;
+}
+
+// Event listener for the R key to restart the game
+window.addEventListener('keydown', (event) => {
+  if (event.key === 'r' || event.key === 'R' || event.key === 'к' || event.key === 'К') {
+    restartGame();
+  }
+});
+
 tileMap.setCanvasSize(canvas);
 setInterval(gameLoop, 1000 / 75);
