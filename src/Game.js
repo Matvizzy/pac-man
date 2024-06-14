@@ -55,7 +55,7 @@ function pause() {
 
 function drawGameEnd() {
   if (gameOver || gameWin) {
-    let text = "You Win!";
+    let text = "  You Win!";
     if (gameOver) {
       text = "Game Over!";
     }
