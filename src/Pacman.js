@@ -1,5 +1,8 @@
 import Enemy from "./Enemy.js";
 import MovingDirection from "./MovingDirection.js";
+//управляет поведением и отображением персонажа Pac-Man в игре
+//принимает начальные координаты, размер тайла, скорость и карту тайлов
+//Он инициализирует различные свойства, включая звуковые эффекты и состояния.
 export default class Pacman {
   constructor(x, y, tileSize, velocity, tileMap) {
     this.x = x;
@@ -34,6 +37,7 @@ export default class Pacman {
     left: 2,
     up: 3,
   };
+  //отвечает за отрисовку Pac-Man на канвасе, обработку движения, анимации и поедания точек/врагов.
   draw(ctx, pause, enemies) {
     if (!pause) {
       this.#move();
@@ -63,6 +67,7 @@ export default class Pacman {
     //   this.tileSize
     // );
   }
+  //загружает изображения для анимации Pac-Man.
   #loadPacmanImages() {
     const pacmanImage1 = new Image();
     pacmanImage1.src = "images/pac0.png";
@@ -84,7 +89,7 @@ export default class Pacman {
     ];
     this.pacmanImageIndex = 0;
   }
-
+//брабатывает нажатия клавиш и устанавливает соответствующее направление движения.
   #keydown = (event) => {
     // up
     if (event.keyCode == 38) {
@@ -115,6 +120,8 @@ export default class Pacman {
       this.madeFirstMove = true;
     }
   };
+  //отвечает за движение Pac-Man. Он проверяет, может ли Pac-Man двигаться в запрошенном направлении,
+  // и если да, обновляет его координаты и направление.
   #move() {
     if (this.currentMovingDirection !== this.requestedMovingDirection) {
       if (
@@ -167,6 +174,7 @@ export default class Pacman {
         break;
     }
   }
+  //управляет анимацией Pac-Man, переключая изображения через определённые интервалы времени.
   #animate() {
     if (this.pacmanAnimationTimer == null) {
       return;
@@ -186,6 +194,12 @@ export default class Pacman {
       this.wakaSound.play();
     }
   }
+  //проверяет, съел ли Pac-Man обычную точку, и если да, воспроизводит соответствующий звук.
+  //Воспроизводится звук.
+  //Активируется режим Power Dot.
+  //Сбрасываются предыдущие таймеры и очищается массив timers.
+  //Устанавливается таймер на 6 секунд, по истечении которого режим Power Dot деактивируется.
+  //Устанавливается таймер на 3 секунды, по истечении которого режим Power Dot будет близок к завершению.
   #eatPowerDot() {
     if (this.tileMap.eatPowerDot(this.x, this.y)) {
       this.powerDotSound.play();
@@ -204,6 +218,9 @@ export default class Pacman {
       this.timers.push(powerDotAboutToExpireTimer);
     }
   }
+  //проверяет, находятся ли враги в состоянии столкновения с Pac-Man, когда активирован режим Power Dot. Если да:
+  //Враги удаляются из массива enemies.
+  //Воспроизводится звук поедания призрака.
   #eatGhost(enemies) {
     if (this.powerDotActive) {
       const collideEnemies = enemies.filter((enemy) => enemy.collideWith(this));

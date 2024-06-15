@@ -1,7 +1,8 @@
 import Pacman from "./Pacman.js";
 import Enemy from "./Enemy.js";
 import MovingDirection from "./MovingDirection.js";
-
+//Конструктор инициализирует размер тайлов и загружает изображения для желтых точек,
+// стен и розовых точек (Power Dot). Также он настраивает таймер анимации для Power Dot.
 export default class TileMap {
   constructor(tileSize) {
     this.tileSize = tileSize;
@@ -71,7 +72,8 @@ export default class TileMap {
 
     this.map = this.maps[Math.floor(Math.random() * this.maps.length)];
   }
-
+//отрисовывает текущую карту на переданном canvas контексте ctx. 
+//В зависимости от значения плитки (тайла), метод вызывает соответствующие методы отрисовки.
   draw(ctx) {
     for (let row = 0; row < this.map.length; row++) {
       for (let column = 0; column < this.map[row].length; column++) {
@@ -95,6 +97,7 @@ export default class TileMap {
       }
     }
   }
+  //Эти методы отрисовывают стены, точки, Power Dots и пустое пространство. Power Dot анимируется переключением между двумя изображениями.
   #drawWall(ctx, column, row, size) {
     ctx.drawImage(
       this.wall,
@@ -129,6 +132,7 @@ export default class TileMap {
     ctx.fillStyle = "black";
     ctx.fillRect(column * this.tileSize, row * this.tileSize, size, size);
   }
+  //Эти методы находят Pac-Man и врагов на карте и создают их экземпляры с соответствующими координатами и скоростью.
   getPacman(velocity) {
     for (let row = 0; row < this.map.length; row++) {
       for (let column = 0; column < this.map[row].length; column++) {
@@ -167,10 +171,12 @@ export default class TileMap {
     }
     return enemies;
   }
+  //устанавливает размер холста в зависимости от размеров карты и размера тайлов.
   setCanvasSize(canvas) {
     canvas.width = this.map[0].length * this.tileSize;
     canvas.height = this.map.length * this.tileSize;
   }
+  //проверяет, сталкивается ли Pac-Man с окружением (стены) при движении в заданном направлении.
   didCollideWithEnvironment(x, y, direction) {
     if (direction == null) {
       return;
@@ -214,12 +220,14 @@ export default class TileMap {
     }
     return false;
   }
+  //Методы didWin и #dotsLeft проверяют, остались ли на карте несъеденные точки. Если их нет, игра считается выигранной.
   didWin() {
     return this.#dotsLeft() === 0;
   }
   #dotsLeft() {
     return this.map.flat().filter((tile) => tile === 0).length;
   }
+  //Эти методы проверяют, съедены ли обычные точки или Power Dots Pac-Man, и обновляют карту, удаляя съеденные точки.
   eatDot(x, y) {
     const row = y / this.tileSize;
     const column = x / this.tileSize;

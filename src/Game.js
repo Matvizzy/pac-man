@@ -15,7 +15,9 @@ let gameWin = false;
 
 const gameOverSound = new Audio("sounds/gameOver.wav");
 const gameWinSound = new Audio("sounds/gameWin.wav");
-
+//Функция gameLoop выполняет основные действия игры:
+//Рисует карту тайлов.Рисует сообщение о конце игры (если игра окончена).Рисует Pac-Man и врагов.
+//Проверяет состояние игры (победа или проигрыш).
 function gameLoop() {
   tileMap.draw(ctx);
   drawGameEnd();
@@ -24,7 +26,7 @@ function gameLoop() {
   checkGameOver();
   checkGameWin();
 }
-
+//роверяет, выиграл ли игрок, вызывая метод didWin у tileMap. Если победа достигнута, воспроизводится звук победы.
 function checkGameWin() {
   if (!gameWin) {
     gameWin = tileMap.didWin();
@@ -33,7 +35,7 @@ function checkGameWin() {
     }
   }
 }
-
+//проверяет, проиграл ли игрок, вызывая функцию isGameOver. Если проигрыш произошел, воспроизводится звук проигрыша.
 function checkGameOver() {
   if (!gameOver) {
     gameOver = isGameOver();
@@ -42,17 +44,18 @@ function checkGameOver() {
     }
   }
 }
-
+//проверяет, столкнулся ли Pac-Man с врагом, когда он не находится под действием Power Dot. Если столкновение произошло, возвращается true.
 function isGameOver() {
   return enemies.some(
     (enemy) => !pacman.powerDotActive && enemy.collideWith(pacman)
   );
 }
-
+//Игра на паузе, если Pac-Man еще не начал двигаться, или игра окончена (победа или поражение
 function pause() {
   return !pacman.madeFirstMove || gameOver || gameWin;
 }
-
+//отображает сообщение о конце игры. Если игра закончилась (победа или поражение),
+// рисуется черный прямоугольник и текст ("You Win!" или "Game Over!").
 function drawGameEnd() {
   if (gameOver || gameWin) {
     let text = "  You Win!";
@@ -95,6 +98,6 @@ window.addEventListener('keydown', (event) => {
     restartGame();
   }
 });
-
+//инициализация игры, размер канваса,запуск игрового цикла 75 раз в сек.
 tileMap.setCanvasSize(canvas);
 setInterval(gameLoop, 1000 / 75);
