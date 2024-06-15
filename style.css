@@ -1,5 +1,6 @@
 #gameCanvas {
   box-shadow: 10px 10px 20px black;
+  margin-right: auto; /* сдвиг вправо, чтобы центрировать */
 }
 h1 {
   text-align: center;
@@ -16,4 +17,11 @@ body {
     rgb(17, 51, 161) 0%,
     rgb(136, 34, 195) 100%
   );
+}
+.volume-control {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 1000; /* для вывода поверх других элементов */
+  color: white; /* цвет текста для видимости на фоне */
 }

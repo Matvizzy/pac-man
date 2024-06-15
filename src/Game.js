@@ -15,6 +15,41 @@ let gameWin = false;
 
 const gameOverSound = new Audio("sounds/gameOver.wav");
 const gameWinSound = new Audio("sounds/gameWin.wav");
+
+const volumeControl = document.getElementById("volumeControl");
+
+// Функция для установки громкости для всех звуковых элементов
+function setVolume(volume) {
+    // Убедимся, что громкость находится в диапазоне от 0 до 1
+    const adjustedVolume = volume / 100;
+    pacman.wakaSound.volume = adjustedVolume;
+    pacman.powerDotSound.volume = adjustedVolume;
+    pacman.eatGhostSound.volume = adjustedVolume;
+    gameOverSound.volume = adjustedVolume;
+    gameWinSound.volume = adjustedVolume;
+}
+
+// Инициализация управления громкостью
+setVolume(volumeControl.value);
+
+// Обработчик события для управления громкостью
+volumeControl.addEventListener("input", () => {
+    setVolume(volumeControl.value);
+});
+
+// Функция для сохранения настроек громкости
+function saveVolumeSetting(volume) {
+  localStorage.setItem("pacman_volume", volume);
+}
+
+// Функция для загрузки настроек громкости
+function loadVolumeSetting() {
+  const savedVolume = localStorage.getItem("pacman_volume");
+  return savedVolume !== null ? parseInt(savedVolume, 10) : 100; // По умолчанию 100, если значение не найдено
+}
+
+
+
 //Функция gameLoop выполняет основные действия игры:
 //Рисует карту тайлов.Рисует сообщение о конце игры (если игра окончена).Рисует Pac-Man и врагов.
 //Проверяет состояние игры (победа или проигрыш).
@@ -76,21 +111,39 @@ function drawGameEnd() {
   }
 }
 
-// функция рестарта
+// Функция перезапуска игры
 function restartGame() {
-  // очистка канваса
+  // Очистка канваса
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  
-  // перезапуск карты
+
+  // Перезапуск карты, Пакмана и врагов
   tileMap = new TileMap(tileSize);
-  
-  // перезапуск пакмана и призраков
   pacman = tileMap.getPacman(velocity);
   enemies = tileMap.getEnemies(velocity);
-  
+
+  // Сброс переменных состояния игры
   gameOver = false;
   gameWin = false;
+
+  // Восстановление настроек громкости
+  const savedVolume = loadVolumeSetting();
+  volumeControl.value = savedVolume;
+  setVolume(savedVolume);
 }
+
+// Обработчик события изменения громкости
+volumeControl.addEventListener("input", () => {
+  const volume = volumeControl.value;
+  setVolume(volume);
+  saveVolumeSetting(volume);
+});
+
+// Начальная настройка: загрузка настроек громкости
+window.addEventListener("load", () => {
+  const savedVolume = loadVolumeSetting();
+  volumeControl.value = savedVolume;
+  setVolume(savedVolume);
+});
 
 // нажатие кнопки R или К = рестарт
 window.addEventListener('keydown', (event) => {

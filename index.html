@@ -1,17 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pac-Man</title>
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  <body>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
     <div>
-      <h1>Pac-Man</h1>
-      <canvas id="gameCanvas"></canvas>
+        <h1>Pac-Man</h1>
+        <canvas id="gameCanvas"></canvas>
+        <div class="volume-control">
+            <label for="volumeControl">Громкость:</label>
+            <input type="range" id="volumeControl" min="0" max="100" value="100">
+        </div>
     </div>
     <script src="src/Game.js" type="module"></script>
-  </body>
+</body>
 </html>
