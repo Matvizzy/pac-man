@@ -14,7 +14,7 @@ describe('MovingDirection', () => {
     expect(MovingDirection.left).toEqual(2);
     expect(MovingDirection.right).toEqual(3);
   });
-  it('should have properties defined', () => {
+  it('should have properties defined', () => { // проверяет, что MovingDirectionа, up, down, left, right  определены (toBeDefined()) 
     expect(MovingDirection).toBeDefined();
     expect(MovingDirection.up).toBeDefined();
     expect(MovingDirection.down).toBeDefined();
